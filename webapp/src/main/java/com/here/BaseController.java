@@ -23,7 +23,7 @@ public class BaseController {
 	@RequestMapping(value="/{name}", method = RequestMethod.GET)
 	public String welcomeName(@PathVariable String name, ModelMap model) {
  
-		model.addAttribute("message", "Maven Web Project + Spring 3 MVC - " + name);
+		model.addAttribute("message", "Maven Web Project + Spring 3 MVC - " + name + " "+System.currentTimeMillis());
 		return "reply";
  
 	}
