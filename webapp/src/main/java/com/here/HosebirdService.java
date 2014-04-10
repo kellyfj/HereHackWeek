@@ -64,7 +64,7 @@ public class HosebirdService {
 				messagesRead++;
 				Tweet t = extractTweet(msg);
 				processTweet(t);
-				if(messagesRead%100==0) {
+				if(messagesRead%500==0) {
 					System.out.println("Read "+messagesRead+" messages");
 				}
 			} else {
@@ -92,7 +92,14 @@ public class HosebirdService {
 				t.setCreatedAt((String) data.get("created_at"));
 				t.setText((String) data.get("text"));
 				Map<String, Object> user = (Map<String, Object>) data.get("user");
-				t.setUserID((String) user.get("screen_name"));
+				if (user != null) {
+					Object o = user.get("screen_name");
+					if (o != null)
+						t.setUserID((String) o);
+					else
+						t.setUserID("N/A");
+				} else
+					t.setUserID("N/A");
 
 				if(data.get("coordinates") !=null) {
 					Map<String,Object> coordinates = (Map<String, Object>) data.get("coordinates");
@@ -141,31 +148,50 @@ public class HosebirdService {
 	}
 
 	private static void persistPlaceUTF8(String foundPlaceName, Tweet t)  {
-		// TODO Auto-generated method stub
-		OutputStreamWriter writer=null;
-		BufferedWriter fbw = null;
+		OutputStreamWriter writer1=null;
+		BufferedWriter fbw1 = null;
+		OutputStreamWriter writer2=null;
+		BufferedWriter fbw2 = null;
 		try {		
-			writer = new OutputStreamWriter(
-	                  new FileOutputStream("/tmp/data.csv", true), "UTF-8");
-	        fbw = new BufferedWriter(writer);   
-		    fbw.write(foundPlaceName +", " + t.getPlaceCountry() +", " + t.getLatitude() + ", " + t.getLongitude());   
-		    fbw.newLine();
-		    fbw.flush();
+			writer1 = new OutputStreamWriter(new FileOutputStream("/tmp/data.csv", true), "UTF-8");
+	        fbw1 = new BufferedWriter(writer1);   
+		    fbw1.write(foundPlaceName +", " + t.getPlaceCountry() +", " + t.getLatitude() + ", " + t.getLongitude());   
+		    fbw1.newLine();
+		    fbw1.flush();
+		    
+			writer2 = new OutputStreamWriter(new FileOutputStream("/tmp/d3data.csv", true), "UTF-8");
+	        fbw2 = new BufferedWriter(writer2);   
+		    fbw2.write(t.getLatitude() + "," + t.getLongitude());   
+		    fbw2.newLine();
+		    fbw2.flush();		    
 			System.out.println("Place persisted successfully");  
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			 if(writer!=null) {
+			 if(writer1!=null) {
 				 try { 
-					 writer.close();
+					 writer1.close();
 				 } catch(IOException ignored) {
 					 
 				 }
 			 }
-			 if(fbw!=null) {
+			 if(fbw1!=null) {
 				 try {
-					 fbw.close();
+					 fbw1.close();
+				} catch (IOException ignored) {
+				}
+			 }
+			 if(writer2!=null) {
+				 try { 
+					 writer2.close();
+				 } catch(IOException ignored) {
+					 
+				 }
+			 }
+			 if(fbw2!=null) {
+				 try {
+					 fbw2.close();
 				} catch (IOException ignored) {
 				}
 			 }
@@ -205,7 +231,7 @@ public class HosebirdService {
 
 	private static void printTweet(Tweet t) {
 		System.out.println(t.getUserID() + "\t" + t.getLanguage() + "\t" + t.getText());
-		System.out.println("Coordinates " + t.getLatitude() + "," + t.getLongitude());
+		System.out.println("Coordinates: " + t.getLatitude() + "," + t.getLongitude());
 		if(t.getPlaceName() != null) System.out.println("Place Details:" + t.getPlaceType() + "\t" + t.getPlaceName() + "\t" + t.getPlaceCountry());
 		if(t.getTags()!=null && !t.getTags().isEmpty()) System.out.println("Tags : " + t.getTags());
 		
