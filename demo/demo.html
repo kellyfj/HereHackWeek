@@ -7,20 +7,75 @@ path {
   stroke-width: 0.25px;
   fill: grey;
 }
+
+center {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.floatLeft {
+	float: left;
+}
+
+.block {
+	width: 250px;
+}
+
+#map-area {
+	width: 80%;
+}
+
+#data-display {
+	margin-left: 50px;
+}
+
+.hidden {
+	display: none;
+}
+
+.clear {
+	clear: both;
+}
 </style>
 <body>
+    
+    <div id="map-area" class="center"></div>
+    
+	<div id="data-display" class="center">
+		<div id="table-header">
+        </div>
+		<div id="table-body">
+            
+			
+		</div>
+        
+	</div>
+    
+    
+    <div id="record-template" class="hidden">
+        <div id="name" class="floatLeft block">Name</div>
+        <div id="country" class="floatLeft block">Country</div>
+        <div id="lat" class="floatLeft block">Lat</div>
+        <div id="long" class="floatLeft block">Long</div>
+        <div class="clear"></div>
+    </div>
+
+
 <script type="text/javascript" src="http://d3js.org/d3.v3.js"></script>
 <script src="http://d3js.org/topojson.v0.min.js"></script>
+<script
+    src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
 <script>
 var width = 1200,
-    height = 1100;
+    height = 800;
 
 var projection = d3.geo.mercator()
     .center([0, 50 ])
     .scale(150)
     .rotate([-180,0]);
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("#map-area").append("svg")
     .attr("width", width)
     .attr("height", height);
 
@@ -56,5 +111,51 @@ d3.csv("d3data.csv", function(error, data) {
 });
 
 </script>
+<script type="text/javascript">
+    $(document).ready(function() {
+                      $.ajax({
+                             type : "GET",
+                             url : "data.csv",
+                             dataType : "text",
+                             success : function(data) {
+                             processData(data);
+                             }
+                             });
+                      });
+                      
+                      function processData(data) {
+                          lines = data.split("\n");
+                          for (i in lines) {
+                              if (i == 0) {
+                                  displayHeader(lines[i]);
+                                  continue;
+                              }
+                              //alert(lines[i]);
+                              displayData(lines[i]);
+                          }
+                      }
+
+function displayHeader(headers) {
+    titles = headers.split(",");
+    for (i in titles) {
+        title = "<div class=\"floatLeft block\"><h2>"
+        + titles[i].toUpperCase() + "</h2></div>";
+        $("#table-header").append(title);
+    }
+    title = "<div class=\"clear\"></div>";
+    $("#table-header").append(title);
+}
+
+function displayData(record) {
+    fields = record.split(",");
+    if(fields.length<4) return;
+    $("#record-template #name").html(fields[0]);
+    $("#record-template #country").html(fields[1]);
+    $("#record-template #lat").html(fields[2]);
+    $("#record-template #long").html(fields[3]);
+    var template = $("#record-template").clone();
+    template.removeAttr("id").appendTo("#table-body").removeAttr("class");
+}
+    </script>
 </body>
 </html>
