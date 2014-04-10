@@ -48,7 +48,7 @@ public class placesApiCaller {
 		name = java.net.URLEncoder.encode(name);
 		String url = baseUrl 
 				+"?app_id="+appId+"&app_code="+appCode
-				+"&at="+longitude+","+latitude
+				+"&at="+latitude+","+longitude
 				+"&q="+name+"&pretty";
 
 		if(printFlag){ System.out.println("URL = "+url); }
@@ -158,18 +158,22 @@ public class placesApiCaller {
 		
 		return titlesList;
 	}
-
+	
 	//Main method, for debug access.
 	public static void main(String[] args)
 			throws JsonParseException, JsonMappingException, IOException{
+		String n="Ganchos Do Meio w/";
+		double[] location = { 40.67168754, -74.01038647 };
 
-		System.out.println(howManyExist("Speakers",52.5044,13.3909));
+		System.out.println(howManyExist(n,location[0],location[1]));
+		//System.out.println(howManyExist("Speakers",52.5044,13.3909));
 		
+		for (String a : whatMatchesExist(n,location[0],location[1])){ System.out.println(a);		}
 		
-		List<String> matches = whatMatchesExist("Speakers",52.5044,13.3909);
-		for(String match : matches)
+		//List<String> matches = whatMatchesExist("Speakers",52.5044,13.3909);
+		//for(String match : matches)
 		{
-			System.out.println(match);
+		//	System.out.println(match);
 		}
 	}
 	
