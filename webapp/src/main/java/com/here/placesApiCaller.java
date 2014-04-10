@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
+import java.util.ArrayList;
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.JsonParser;
@@ -95,6 +96,16 @@ public class placesApiCaller {
 		return map;
 	}
 
+	
+	//Rather than simply counting, this returns the items in results.items.
+	private static List<Map<String, Object>> returnResults(Map<String,Object> jsonObject)
+	{
+		Map<String,Object> results = (Map<String,Object>) jsonObject.get("results");
+		List items = (List) results.get("items");
+		return items;
+	}
+	
+	
 	//Counts the objects in results.items inside the JSON search result.
 	private static int countResults(Map<String,Object> jsonObject)
 	{
@@ -119,6 +130,34 @@ public class placesApiCaller {
 			return -1;
 		}
 	}
+	
+	//This returns data about the matches.  It returns title right now, but could be modified for any other data.
+	public static List<String> whatMatchesExist(String name, double lo, double la)
+	{
+		List<String> titlesList = new ArrayList<String>();
+		String url = getUrl(name,lo,la);
+		String json = getPlaceObjectList(url);
+		try {
+			Map<String,Object> jsonObjects = parseJsonObjectList(json);
+			List<Map<String,Object> > jsonOList = returnResults(jsonObjects);
+			
+			//Parse the list down into names.
+			for (Object jsonO : jsonOList)
+			{
+				//grab whatever data you want from here
+				String titleEntry = (String)((Map<String,Object>)jsonO).get("title");
+				titlesList.add(titleEntry);
+				
+				if(printFlag) { System.out.println(titleEntry); }
+			}
+			
+			
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		
+		return titlesList;
+	}
 
 	//Main method, for debug access.
 	public static void main(String[] args)
@@ -126,6 +165,12 @@ public class placesApiCaller {
 
 		System.out.println(howManyExist("Speakers",52.5044,13.3909));
 		
+		
+		List<String> matches = whatMatchesExist("Speakers",52.5044,13.3909);
+		for(String match : matches)
+		{
+			System.out.println(match);
+		}
 	}
 	
 	
