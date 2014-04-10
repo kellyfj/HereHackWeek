@@ -189,12 +189,12 @@ public class HosebirdService {
 		
 		int count = p.howManyExist(searchName, t.getLongitude(), t.getLatitude());
 		
-		if(count >= 0) {
+		if(count >= 1) {
 			System.out.println("PlacesAPI Search Found ["+count+"] likely hits at these Coordinates");
-			return searchName;
+			return null;
 		}
 		else
-			return null;
+			return searchName;
 	}
 
 	private static void printTweet(Tweet t) {
