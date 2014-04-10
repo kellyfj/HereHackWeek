@@ -1,5 +1,8 @@
 package com.here;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -84,9 +87,13 @@ public class HosebirdService {
 
 				if(data.get("coordinates") !=null) {
 					Map<String,Object> coordinates = (Map<String, Object>) data.get("coordinates");
-					List<Double> longLat = (List<Double>) coordinates.get("coordinates");
-					t.setLongitude(longLat.get(0));
-					t.setLatitude(longLat.get(1));
+					try{
+						List<Double> longLat = (List<Double>) coordinates.get("coordinates");
+						t.setLongitude(longLat.get(0));
+						t.setLatitude(longLat.get(1));
+					} catch(ClassCastException c) {
+						System.err.println("Exception casting coordinates :"+ coordinates.get("coordinates"));
+					}
 				}
 				if(data.get("place")!=null){
 					//System.out.println("Place present" + data.get("place"));
@@ -117,11 +124,38 @@ public class HosebirdService {
 		
 		if(isUsableFoursquareTweet(t)) {	
 			printTweet(t);
-			findPlace(t);
+			String foundPlaceName = findPlace(t);
+			if(foundPlaceName != null) {
+				persistPlace(foundPlaceName, t);
+			}
 		}
 	}
 	
-	private static boolean findPlace(Tweet t) {
+	private static void persistPlace(String foundPlaceName, Tweet t)  {
+		// TODO Auto-generated method stub
+		FileWriter fout=null;
+		PrintWriter fileout=null;
+		try {
+			fout = new FileWriter("/tmp/data.csv", true);
+   		    fileout = new PrintWriter(fout,true);
+		    fileout.print(foundPlaceName +", " + t.getPlaceCountry() +", " + t.getLatitude() + ", " + t.getLongitude() + "\n");   
+			System.out.println("Place persisted successfully");  
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			 if(fileout!=null) 
+				 fileout.close();
+			 if(fout!=null) {
+				 try {
+					fout.close();
+				} catch (IOException ignored) {
+				}
+			 }
+		}
+	}
+
+	private static String findPlace(Tweet t) {
 		
 		placesApiCaller p = new placesApiCaller();
 		
@@ -134,19 +168,22 @@ public class HosebirdService {
 		if(end < start)
 			end = name.indexOf("http://");
 		if(end < start)
-			return false;
+			return null;
 		
 		String searchName = name.substring(start, end).trim();
+		if(searchName.isEmpty())
+			return null;
+		
 		System.out.println("SearchName = ["+searchName+"]");
 		
 		int count = p.howManyExist(searchName, t.getLongitude(), t.getLatitude());
 		
 		if(count >= 0) {
-			System.out.println("Found ["+count+"] likely hits");
-			return true;
+			System.out.println("PlacesAPI Search Found ["+count+"] likely hits at these Coordinates");
+			return searchName;
 		}
 		else
-			return false;
+			return null;
 	}
 
 	private static void printTweet(Tweet t) {
