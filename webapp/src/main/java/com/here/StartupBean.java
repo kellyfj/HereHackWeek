@@ -2,10 +2,12 @@ package com.here;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import javax.annotation.PreDestroy;
 
 import org.springframework.beans.factory.InitializingBean;
 
 public class StartupBean implements InitializingBean {
+	private ExecutorService executor;
 	
 	@Override
 	public void afterPropertiesSet() {	
@@ -14,9 +16,14 @@ public class StartupBean implements InitializingBean {
 		 * 1) It runs continuously
 		 * 2) If we didn't do it in a thread it would block the rest of the web server startup
 		 */
-		ExecutorService executor = Executors.newFixedThreadPool(1);
+		this.executor = Executors.newFixedThreadPool(1);
 		HosebirdThread t= new HosebirdThread();
 		executor.execute(t);
+	}
+	
+	@PreDestroy
+	public void atShutdown() {
+		this.executor.shutdownNow();
 	}
 }
 
