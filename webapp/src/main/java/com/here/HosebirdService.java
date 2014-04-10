@@ -54,7 +54,7 @@ public class HosebirdService {
 			String msg = queue.poll(5, TimeUnit.SECONDS);			
 			if (msg != null) {
 				Tweet t = extractTweet(msg);
-				printTweet(t);
+				processTweet(t);
 			} else {
 				System.out.println("Did not receive a message in 5 seconds");
 			}
@@ -111,18 +111,16 @@ public class HosebirdService {
 		return t;
 	}
 
-	private static void printTweet(Tweet t) {
+	private static void processTweet(Tweet t) {
 		if(t==null)
 			throw new IllegalArgumentException("Tweet cannot be null");
-		if(t.getText()==null)
-			return;
-		if(t.getLatitude()==null) 
-			return;
-		//if(t.getLanguage()==null || !"en".equals(t.getLanguage()))
-		//	return;
-		//if(!t.getText().contains("I'm at"))
-		//	return;
 		
+		if(isUsableFoursquareTweet(t)) {	
+			printTweet(t);
+		}
+	}
+	
+	private static void printTweet(Tweet t) {
 		System.out.println(t.getUserID() + "\t" + t.getLanguage() + "\t" + t.getText());
 		System.out.println("Coordinates " + t.getLatitude() + "," + t.getLongitude());
 		if(t.getPlaceName() != null) System.out.println("Place Details:" + t.getPlaceType() + "\t" + t.getPlaceName() + "\t" + t.getPlaceCountry());
@@ -131,6 +129,13 @@ public class HosebirdService {
 		System.out.println("");
 	}
 
+	private static boolean isUsableFoursquareTweet(Tweet t) {
+
+		if(t.getText()!=null && t.getLatitude()!=null && t.getText().contains("I'm at"))
+			return true;
+		else
+			return false;
+	}
 	
 	public static void main(String[] args) {
 		try {

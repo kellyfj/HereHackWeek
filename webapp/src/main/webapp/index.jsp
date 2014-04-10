@@ -8,12 +8,7 @@ path {
 }
 </style>
 <body>
-<<<<<<< Updated upstream
-<h2>Hello World 5!</h2>
-=======
-<!-- <script type="text/javascript" src="d3/d3.v3.js"></script> -->
 <script type="text/javascript" src="http://d3js.org/d3.v3.js" charset="UTF-8"></script>
-<!-- <script src="js/topojson.v0.min.js"></script> -->
 <script src="http://d3js.org/topojson.v0.min.js"></script>
 <script>
 
@@ -61,6 +56,5 @@ d3.csv("cities.csv", function(error, data) {
 });
 
 </script>
->>>>>>> Stashed changes
 </body>
 </html>

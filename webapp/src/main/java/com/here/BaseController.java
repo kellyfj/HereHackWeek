@@ -12,20 +12,16 @@ public class BaseController {
  
 	@RequestMapping(method = RequestMethod.GET)
 	public String welcome(ModelMap model) {
- 
 		model.addAttribute("message", "Maven Web Project + Spring 3 MVC - welcome()");
  
-		//Spring uses InternalResourceViewResolver and return back welcome.jsp
+		//Spring uses InternalResourceViewResolver and return back reply.jsp
 		return "reply";
- 
 	}
  
 	@RequestMapping(value="/{name}", method = RequestMethod.GET)
 	public String welcomeName(@PathVariable String name, ModelMap model) {
- 
 		model.addAttribute("message", "Maven Web Project + Spring 3 MVC - " + name + " "+System.currentTimeMillis());
 		return "reply";
- 
 	}
  
 }

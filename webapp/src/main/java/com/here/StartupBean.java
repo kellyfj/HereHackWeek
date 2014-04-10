@@ -9,6 +9,11 @@ public class StartupBean implements InitializingBean {
 	
 	@Override
 	public void afterPropertiesSet() {	
+		/**
+		 * Launch Hosebird service in a thread because
+		 * 1) It runs continuously
+		 * 2) If we didn't do it in a thread it would block the rest of the web server startup
+		 */
 		ExecutorService executor = Executors.newFixedThreadPool(1);
 		HosebirdThread t= new HosebirdThread();
 		executor.execute(t);
