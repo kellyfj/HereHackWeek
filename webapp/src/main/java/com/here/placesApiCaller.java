@@ -163,12 +163,12 @@ public class placesApiCaller {
 	public static void main(String[] args)
 			throws JsonParseException, JsonMappingException, IOException{
 		String n="Ganchos Do Meio w/";
-		double[] location = { 40.67168754, -74.01038647 };
+		double[] location = { -27.31461583 , -48.55447967};
 
-		System.out.println(howManyExist(n,location[0],location[1]));
+		System.out.println(howManyExist(n,location[1],location[0]));
 		//System.out.println(howManyExist("Speakers",52.5044,13.3909));
 		
-		for (String a : whatMatchesExist(n,location[0],location[1])){ System.out.println(a);		}
+		for (String a : whatMatchesExist(n,location[1],location[0])){ System.out.println(a);		}
 		
 		//List<String> matches = whatMatchesExist("Speakers",52.5044,13.3909);
 		//for(String match : matches)
