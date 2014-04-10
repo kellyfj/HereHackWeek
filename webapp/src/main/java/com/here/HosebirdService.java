@@ -1,7 +1,10 @@
 package com.here;
 
+import java.io.BufferedWriter;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
@@ -126,35 +129,43 @@ public class HosebirdService {
 			printTweet(t);
 			String foundPlaceName = findPlace(t);
 			if(foundPlaceName != null) {
-				persistPlace(foundPlaceName, t);
+				persistPlaceUTF8(foundPlaceName, t);
 			}
 		}
 	}
-	
-	private static void persistPlace(String foundPlaceName, Tweet t)  {
+
+	private static void persistPlaceUTF8(String foundPlaceName, Tweet t)  {
 		// TODO Auto-generated method stub
-		FileWriter fout=null;
-		PrintWriter fileout=null;
-		try {
-			fout = new FileWriter("/tmp/data.csv", true);
-   		    fileout = new PrintWriter(fout,true);
-		    fileout.print(foundPlaceName +", " + t.getPlaceCountry() +", " + t.getLatitude() + ", " + t.getLongitude() + "\n");   
+		OutputStreamWriter writer=null;
+		BufferedWriter fbw = null;
+		try {		
+			writer = new OutputStreamWriter(
+	                  new FileOutputStream("/tmp/data.csv", true), "UTF-8");
+	        fbw = new BufferedWriter(writer);   
+		    fbw.write(foundPlaceName +", " + t.getPlaceCountry() +", " + t.getLatitude() + ", " + t.getLongitude());   
+		    fbw.newLine();
+		    fbw.flush();
 			System.out.println("Place persisted successfully");  
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
-			 if(fileout!=null) 
-				 fileout.close();
-			 if(fout!=null) {
+			 if(writer!=null) {
+				 try { 
+					 writer.close();
+				 } catch(IOException ignored) {
+					 
+				 }
+			 }
+			 if(fbw!=null) {
 				 try {
-					fout.close();
+					 fbw.close();
 				} catch (IOException ignored) {
 				}
 			 }
 		}
 	}
-
+	
 	private static String findPlace(Tweet t) {
 		
 		placesApiCaller p = new placesApiCaller();
