@@ -44,6 +44,7 @@ public class placesApiCaller {
     //Constructs the URL from name, longitude, latitude, and constants.
 	private static String getUrl(String name, double longitude, double latitude){
 		
+		name = java.net.URLEncoder.encode(name);
 		String url = baseUrl 
 				+"?app_id="+appId+"&app_code="+appCode
 				+"&at="+longitude+","+latitude
@@ -105,6 +106,7 @@ public class placesApiCaller {
 	//Public access point for finding out how many search results for a given name+lat+long.
 	public static int howManyExist(String name, double lo, double la)
 	{
+
 		String url = getUrl(name, lo, la);
 		String json = getPlaceObjectList(url);
 		try {
