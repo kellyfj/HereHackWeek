@@ -41,6 +41,7 @@ public class placesApiCaller {
 	
 	private static String getUrl(String name, double longitude, double latitude){
 		
+		name = java.net.URLEncoder.encode(name);
 		String url = baseUrl 
 				+"?app_id="+appId+"&app_code="+appCode
 				+"&at="+longitude+","+latitude
@@ -98,6 +99,7 @@ public class placesApiCaller {
 	
 	public static int howManyExist(String name, double lo, double la)
 	{
+
 		String url = getUrl(name, lo, la);
 		String json = getPlaceObjectList(url);
 		try {

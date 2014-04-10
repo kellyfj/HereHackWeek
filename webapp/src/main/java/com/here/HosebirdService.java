@@ -117,9 +117,38 @@ public class HosebirdService {
 		
 		if(isUsableFoursquareTweet(t)) {	
 			printTweet(t);
+			findPlace(t);
 		}
 	}
 	
+	private static boolean findPlace(Tweet t) {
+		
+		placesApiCaller p = new placesApiCaller();
+		
+		String name = t.getText();
+		int start = name.indexOf("I'm at")+6;
+		
+		int end = name.indexOf("@");
+		if(end < start)
+			end = name.indexOf("(");
+		if(end < start)
+			end = name.indexOf("http://");
+		if(end < start)
+			return false;
+		
+		String searchName = name.substring(start, end).trim();
+		System.out.println("SearchName = ["+searchName+"]");
+		
+		int count = p.howManyExist(searchName, t.getLongitude(), t.getLatitude());
+		
+		if(count >= 0) {
+			System.out.println("Found ["+count+"] likely hits");
+			return true;
+		}
+		else
+			return false;
+	}
+
 	private static void printTweet(Tweet t) {
 		System.out.println(t.getUserID() + "\t" + t.getLanguage() + "\t" + t.getText());
 		System.out.println("Coordinates " + t.getLatitude() + "," + t.getLongitude());
