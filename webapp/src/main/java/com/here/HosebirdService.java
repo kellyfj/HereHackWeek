@@ -24,6 +24,8 @@ import com.twitter.hbc.httpclient.auth.OAuth1;
 
 public class HosebirdService {
 
+	private static int messagesRead=0;
+	
 	public static void oauth(String consumerKey, String consumerSecret,
 			String token, String secret) throws InterruptedException {
 		// Create an appropriately sized blocking queue
@@ -59,8 +61,12 @@ public class HosebirdService {
 
 			String msg = queue.poll(5, TimeUnit.SECONDS);			
 			if (msg != null) {
+				messagesRead++;
 				Tweet t = extractTweet(msg);
 				processTweet(t);
+				if(messagesRead%100==0) {
+					System.out.println("Read "+messagesRead+" messages");
+				}
 			} else {
 				System.out.println("Did not receive a message in 5 seconds");
 			}
@@ -190,7 +196,7 @@ public class HosebirdService {
 		int count = p.howManyExist(searchName, t.getLongitude(), t.getLatitude());
 		
 		if(count >= 1) {
-			System.out.println("PlacesAPI Search Found ["+count+"] likely hits at these Coordinates");
+			System.out.println("PlacesAPI Search Found ["+count+"] likely hits at these Coordinates. Skipping . . . ");
 			return null;
 		}
 		else
