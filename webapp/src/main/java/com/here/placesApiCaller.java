@@ -19,15 +19,17 @@ import org.codehaus.jackson.type.TypeReference;
 
 public class placesApiCaller {
 
+	//Constants for setting up the URL
 	private static String baseUrl = "http://places.cit.api.here.com/places/v1/discover/search";
 	private static String appId = "4614bb9a70b0ec424d5d8810004c4b0b";
 	private static String appCode = "TvglnNNykdPcXdt61yCiCA";
-	private static Boolean printFlag = false;
-	
+	//Flag for printing debug data.
+	private static Boolean printFlag = false;	
 	public static void setPrint(Boolean value){
 		printFlag = value;
 	}
 	
+	//Reads the JSON string from the request stream into a variable.
     static String readFromInputStream(InputStream input) throws IOException {
         java.util.Scanner scanner = new java.util.Scanner(input).useDelimiter("\\A");
         String result = "";
@@ -39,6 +41,7 @@ public class placesApiCaller {
         return result;        
     }
 	
+    //Constructs the URL from name, longitude, latitude, and constants.
 	private static String getUrl(String name, double longitude, double latitude){
 		
 		name = java.net.URLEncoder.encode(name);
@@ -64,6 +67,7 @@ public class placesApiCaller {
 		return url;
 	}
 
+	//Gets the JSON string from the URL.
 	private static String getPlaceObjectList(String url){
 		try {
 			URLConnection connection = new URL(url).openConnection();
@@ -77,7 +81,8 @@ public class placesApiCaller {
 		}
 		return "";
 	}
-	
+
+	//Parses the JSON string into a Map<String,Object>, wrapping the Jackson stuff.
 	private static Map<String,Object> parseJsonObjectList(String placeObjectList) 
 			throws JsonParseException, JsonMappingException, IOException{
 		Map<String,Object> map = new HashMap<String,Object>();
@@ -89,14 +94,16 @@ public class placesApiCaller {
 		
 		return map;
 	}
-	
+
+	//Counts the objects in results.items inside the JSON search result.
 	private static int countResults(Map<String,Object> jsonObject)
 	{
 		Map<String,Object> results = (Map<String,Object>) jsonObject.get("results");
 		List items = (List) results.get("items");
 		return items.size();
 	}
-	
+
+	//Public access point for finding out how many search results for a given name+lat+long.
 	public static int howManyExist(String name, double lo, double la)
 	{
 
@@ -112,7 +119,8 @@ public class placesApiCaller {
 			return -1;
 		}
 	}
-	
+
+	//Main method, for debug access.
 	public static void main(String[] args)
 			throws JsonParseException, JsonMappingException, IOException{
 
