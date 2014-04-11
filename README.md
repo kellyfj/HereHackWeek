@@ -21,8 +21,13 @@ We added it to a list
 
 Technologies Used: Java Twitter client, D3.js (for cluster visualization) e.g. https://github.com/mbostock/d3/wiki/Gallery
 
-From running for 3 hours here is a list of candidate places created
+From running for 3.5 hours here is a display of the 250+ candidate new places 
 
 ![alt tag](https://raw.github.com/kellyfj/HereHackWeek/master/demo/newplaces.png)
 
 You will note that FourSquare is used heavily in Turkey and Brazil
+
+Futher Improvements:
+1) Remove the "w/" in some place names searches e.g. "Karabük Üniversitesi YDYO w/"
+2) recognize and remove private places e.g. "Hocaoğlu's Home w/"
+3) Pay Twitter to get more tweets (there's no way we're getting the full stream!)
