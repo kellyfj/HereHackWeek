@@ -32,6 +32,7 @@ From running for 3.5 hours here is a display of the 250+ candidate new places
 You will note that FourSquare is used heavily in Turkey and Brazil
 
 Futher Improvements:
-1) Remove the "w/" in some place names searches e.g. "Karabük Üniversitesi YDYO w/"
-2) recognize and remove private places e.g. "Hocaoğlu's Home w/"
-3) Pay Twitter to get more tweets (there's no way we're getting the full stream!)
+
+1. Remove the "w/" in some place names searches e.g. "Karabük Üniversitesi YDYO w/"
+2. Recognize and remove private places e.g. "Hocaoğlu's Home w/"
+3. Pay Twitter to get more tweets (there's no way we're getting the full stream!)
