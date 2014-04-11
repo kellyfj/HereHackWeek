@@ -1,6 +1,8 @@
 HereHackWeek
 ============
 
+Less like a week and more like 2-3 days . . . .
+
 #### Summary
 Mining the Twitter Feed location tweets to help check for Place freshness within Places API
 
@@ -25,7 +27,7 @@ We added it to a list
 
 Technologies Used: Java Twitter client, D3.js (for cluster visualization) e.g. https://github.com/mbostock/d3/wiki/Gallery
 
-From running for 3.5 hours here is a display of the 250+ candidate new places 
+From running for 6 hours here is a display of the 400+ candidate new places we found
 
 ![alt tag](https://raw.github.com/kellyfj/HereHackWeek/master/demo/newplaces.png)
 
@@ -35,4 +37,5 @@ Futher Improvements:
 
 1. Remove the "w/" in some place names searches e.g. "Karabük Üniversitesi YDYO w/"
 2. Recognize and remove private places e.g. "Hocaoğlu's Home w/"
-3. Pay Twitter to get more tweets (there's no way we're getting the full stream!)
+3. Pay Twitter to get more tweets (we're not getting the full stream!)
+4. Inspect searches that return potential hits - invariably some of these searches are not the place (could use Levenshtein distance measure to get an idea of how much of a match these are)
