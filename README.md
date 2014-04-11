@@ -1,15 +1,19 @@
 HereHackWeek
 ============
 
+#### Summary
 Mining the Twitter Feed location tweets to help check for Place freshness within Places API
 
-Team Members: Frank Kelly, Will Fergus, Yuntao Zhang
+#### Team Members
+Frank Kelly, Will Fergus, Yuntao Zhang
 
-Team Name: House Baratheon
+#### Team Name
+House Baratheon
 
-Description: Approx 1-2% of all Tweets are Geo-Tagged. That's still a lot of data. What can we do with that?
+#### Detailed Description
 
-We basically listened to FourSquare related tweets that were geotagged e.g. "I'm at Some Cafe w/ @JoeMyFriend" 
+Approx 1-2% of all Tweets are Geo-Tagged. That's still a lot of data. What can we do with that?
+Well for the Hackathon we basically listened to FourSquare related tweets that were geotagged e.g. "I'm at Some Cafe w/ @JoeMyFriend" 
 
 Then we
 
