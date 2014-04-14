@@ -14,8 +14,7 @@ House Baratheon
 
 #### Detailed Description
 
-Approx 1-2% of all Tweets are Geo-Tagged. That's still a lot of data. What can we do with that?
-Well for the Hackathon we basically listened to FourSquare related tweets that were geotagged e.g. "I'm at Some Cafe w/ @JoeMyFriend" 
+Approx 1-2% of all Tweets are Geo-Tagged. With 500m tweets a day on average, 1-2% is still a lot of data. What can we do with that? Well for the Hackathon we basically listened to FourSquare related tweets that were geotagged e.g. "I'm at Some Cafe w/ @JoeMyFriend" 
 
 Then we
 
