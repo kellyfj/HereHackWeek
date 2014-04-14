@@ -240,7 +240,8 @@ public class HosebirdService {
 
 	private static boolean isUsableFoursquareTweet(Tweet t) {
 
-		if(t.getText()!=null && t.getLatitude()!=null && t.getText().contains("I'm at"))
+		if(t.getText()!=null && t.getLatitude()!=null && t.getText().contains("I'm at") && !t.getText().toLowerCase().contains("home")
+				&& !t.getText().toLowerCase().contains("house"))
 			return true;
 		else
 			return false;
